@@ -220,9 +220,9 @@ let encryptedBytes: [UInt8] = try "my secret string".encrypt(AES(key: "secret0ke
 let base64 = NSData(bytes: encryptedBytes).base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
 ```
 
-#Additional string encryption/decryption using AES outputs as base64 String:
-
-Encrypt/Decrypt message
+#####Additional plain text encryption/decryption with base64 output:
+#######Encrypt plainText to base64(after AES encryption)
+#######Decrypt base64(after AES decryption) back to plainText
 ```swift
 let enc = AESEncryptStringToBase64("This is a secret message", key: "0123456789012345", iv: "0123456789012345")
 print(enc) //jBxv6NuVpwyr+OyCVwfCYlvI9zrNuOL2ZN0SdQPy+Ec=
