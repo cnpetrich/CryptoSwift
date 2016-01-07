@@ -220,7 +220,7 @@ let encryptedBytes: [UInt8] = try "my secret string".encrypt(AES(key: "secret0ke
 let base64 = NSData(bytes: encryptedBytes).base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
 ```
 
-Added additional string encryption/decryption using AES outputs as base64 String:
+#Additional string encryption/decryption using AES outputs as base64 String:
 
 Encrypt/Decrypt message
 ```swift
