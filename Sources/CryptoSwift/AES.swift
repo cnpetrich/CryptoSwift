@@ -112,6 +112,64 @@ final public class AES {
     - returns: Encrypted data
     */
     
+
+    
+    public func AESEncryptStringToBase64(text: String, key: String, iv: String) -> String
+    {
+        let aes = try! AES(key: key, iv: iv, blockMode: .CBC)
+        
+        // encrypt String -> AES [UInt8]
+        let enc = try! aes.encrypt(text.dataUsingEncoding(NSUTF8StringEncoding)!.arrayOfBytes(), padding: PKCS7())
+        
+        //Convert [UInt8] -> Base64 String
+        let encb64 = byteArrayToBase64(enc)
+        return encb64
+    }
+    
+    public func AESDecryptBase64ToString(base64: String, key: String, iv: String) -> String
+    {
+        let aes = try! AES(key: key, iv: iv, blockMode: .CBC)
+        
+        //Convert base64 -> [UInt8]
+        let dataBytes = base64ToByteArray(base64)
+        
+        //decrypt AES [UInt8] - > [UInt8]
+        let dec =  try! aes.decrypt(dataBytes!, padding: PKCS7())
+        
+        //[UInt8] -> NSString
+        let str = NSString(data: NSData.withBytes(dec), encoding: NSUTF8StringEncoding)
+        
+        //NSString -> String
+        return str as! String
+    }
+    
+    
+    
+    //[UInt8] -> String
+    public func byteArrayToBase64(b: [UInt8]) -> String
+    {
+        var b64String = ""
+        let theData = NSData(bytes: b as [UInt8], length: b.count)
+        b64String = theData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        return b64String
+    }
+    
+    
+    //String -> [UInt8]
+    public func base64ToByteArray(base64String: String) -> [UInt8]?
+    {
+        if let nsdata = NSData(base64EncodedString: base64String, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+        {
+            var bytes = [UInt8](count: nsdata.length, repeatedValue: 0)
+            nsdata.getBytes(&bytes)
+            return bytes
+        }
+        return nil // Invalid input
+    }
+
+
+
+    
     public func encrypt(bytes:[UInt8], padding:Padding? = PKCS7()) throws -> [UInt8] {
         var finalBytes = bytes;
         
